@@ -12,7 +12,9 @@ st.title("Multi-Echelon Inventory Control Tower")
 st.header("Demand Forecast")
 st.dataframe(forecast.head())
 
-st.line_chart(forecast[["actual_demand", "forecast_demand"]])
+st.line_chart(
+    forecast.set_index("date")[["actual_demand", "forecast_demand"]]
+)
 
 st.header("Inventory Policy")
 st.dataframe(inventory.head())
@@ -26,6 +28,5 @@ st.bar_chart(echelon_summary)
 st.header("Simulation Performance")
 st.dataframe(simulation.head())
 
-st.bar_chart(
-    simulation.groupby("abc_class")["stockout_probability"].mean()
-)
+abc_stockout = simulation.groupby("abc_class")["stockout_probability"].mean()
+st.bar_chart(abc_stockout)
